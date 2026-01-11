@@ -2,114 +2,151 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Mental Health Intake & Service Triage</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mental Health Intake and Service Triage Assessment</title>
-
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function () {
-  emailjs.init("Q2ORYrQi3dYLLTYYg");
-})();
-</script>
 
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f4f6f8;
+  background: #f5f7fa;
+  color: #2c3e50;
+  margin: 0;
   padding: 20px;
 }
+
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: auto;
   background: #ffffff;
-  padding: 30px;
+  padding: 25px;
   border-radius: 8px;
 }
+
 h1, h2 {
-  text-align: center;
+  color: #2c3e50;
 }
-fieldset {
-  margin-bottom: 25px;
-  padding: 20px;
-  border: 1px solid #ccc;
+
+.section {
+  margin-bottom: 30px;
 }
-legend {
-  font-weight: bold;
-}
+
 label {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   font-weight: bold;
 }
-.radio-group label {
-  display: inline-block;
-  margin-right: 15px;
-  font-weight: normal;
-}
-input, textarea {
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
   width: 100%;
   padding: 8px;
-  margin-top: 5px;
+  margin-top: 4px;
 }
+
+.scale {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.scale label {
+  font-weight: normal;
+}
+
 button {
-  margin-top: 30px;
-  padding: 15px;
-  width: 100%;
-  background: #2c3e50;
-  color: #fff;
-  font-size: 16px;
+  background: #3498db;
+  color: #ffffff;
   border: none;
+  padding: 12px 20px;
+  font-size: 16px;
   cursor: pointer;
+  border-radius: 4px;
 }
+
 button:hover {
-  background: #1a252f;
+  background: #2d83c5;
 }
-.small {
-  font-size: 0.9em;
-  color: #555;
+
+.result {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 6px;
+  background: #eef3f8;
+  font-size: 18px;
 }
 </style>
-  }
 </head>
 
 <body>
 <div class="container">
 
-<h1>MENTAL HEALTH INTAKE AND SERVICE TRIAGE ASSESSMENT</h1>
-<p class="small" style="text-align:center;">
-For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.
-</p>
+<h1>Mental Health Intake & Service Triage Assessment</h1>
+<p>For initial consultation use only. This is not a diagnostic tool.</p>
 
-<form id="mentalHealthForm">
-
-<!-- SECTION 1 -->
-<fieldset>
-<legend>SECTION 1: BASIC INFORMATION</legend>
-
+<div class="section">
+<h2>Section 1: Basic Information</h2>
 <label>Client Name</label>
-<input name="client_name" required>
+<input type="text">
 
 <label>Age</label>
-<input name="age">
+<input type="number">
 
 <label>Date</label>
-<input type="date" name="assessment_date">
+<input type="date">
 
 <label>Referred By</label>
-<input name="referred_by">
+<input type="text">
 
 <label>Consultation Type</label>
-<input name="consultation_type" value="Free Assessment">
-</fieldset>
+<input type="text" value="Free Assessment">
+</div>
 
-<!-- SECTION 2 -->
-<fieldset>
-<legend>SECTION 2: CURRENT MENTAL STATE</legend>
-<p class="small">Scale: 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day</p>
+<div class="section">
+<h2>Section 2: Current Mental State</h2>
+<p>0 = Not at all | 1 = Several days | 2 = More than half the days | 3 = Nearly every day</p>
+
+<div id="section2"></div>
+</div>
+
+<div class="section">
+<h2>Section 3: Functional Impact</h2>
+
+<div id="section3"></div>
+</div>
+
+<div class="section">
+<h2>Section 4: Coping and Support</h2>
+
+<label><input type="checkbox" class="support"> Healthy coping strategies</label>
+<label><input type="checkbox" class="support"> Emotional support from others</label>
+<label><input type="checkbox" class="support"> Control of emotions</label>
+<label><input type="checkbox" class="support"> Sought help before</label>
+<label><input type="checkbox" class="support"> Safe living environment</label>
+<label><input type="checkbox" class="support"> Access to basic needs</label>
+<label><input type="checkbox" class="support"> Ability to set boundaries</label>
+<label><input type="checkbox" class="support"> Sense of purpose</label>
+</div>
+
+<div class="section">
+<h2>Section 5: Risk Screening</h2>
+
+<label><input type="checkbox" class="risk"> Thoughts of harming yourself</label>
+<label><input type="checkbox" class="risk"> Thoughts of harming others</label>
+<label><input type="checkbox" class="risk"> Feeling unable to keep yourself safe</label>
+<label><input type="checkbox" class="risk"> History of severe diagnosis</label>
+<label><input type="checkbox" class="risk"> History of psychiatric hospitalization</label>
+<label><input type="checkbox" class="risk"> Recent trauma or loss</label>
+</div>
+
+<button onclick="calculateScore()">Calculate Recommendation</button>
+
+<div id="result" class="result"></div>
+
+</div>
 
 <script>
-const mentalQuestions = [
+const section2Items = [
 "Feeling sad, empty, or hopeless",
 "Excessive worry or anxiety",
 "Difficulty concentrating or focusing",
@@ -131,162 +168,68 @@ const mentalQuestions = [
 "Increased substance use",
 "Feelings of impending doom"
 ];
-</script>
 
-<div id="mental-state"></div>
-
-</fieldset>
-
-<!-- SECTION 3 -->
-<fieldset>
-<legend>SECTION 3: FUNCTIONAL IMPACT</legend>
-
-<script>
-const functionalQuestions = [
+const section3Items = [
 "Work or school performance",
 "Relationships",
 "Self-care and daily routines",
 "Decision-making",
 "Emotional regulation",
 "Physical health",
-"Social/leisure activities",
+"Social or leisure activities",
 "Financial responsibilities",
 "Family dynamics",
 "Overall quality of life"
 ];
-</script>
 
-<div id="functional-impact"></div>
-
-</fieldset>
-
-<!-- SECTION 4 -->
-<fieldset>
-<legend>SECTION 4: COPING AND SUPPORT</legend>
-
-<script>
-const copingQuestions = [
-"Healthy coping strategies",
-"Emotional support from others",
-"Control of emotions",
-"Sought help before",
-"Safe living environment",
-"Access to basic needs",
-"Ability to set boundaries",
-"Sense of purpose"
-];
-</script>
-
-<div id="coping-support"></div>
-
-</fieldset>
-
-<!-- SECTION 5 -->
-<fieldset>
-<legend>SECTION 5: RISK SCREENING</legend>
-
-<script>
-const riskQuestions = [
-"Thoughts of harming yourself",
-"Thoughts of harming others",
-"Feeling unable to keep yourself safe",
-"History of severe diagnosis",
-"History of psychiatric hospitalization",
-"Recent trauma or loss"
-];
-</script>
-
-<div id="risk-screening"></div>
-
-</fieldset>
-
-<!-- CLINICAL NOTES -->
-<fieldset>
-<legend>CLINICAL NOTES (For Coach Use Only)</legend>
-
-<label>Observed Mood</label>
-<input name="mood">
-
-<label>Affect</label>
-<input name="affect">
-
-<label>Communication Style</label>
-<input name="communication_style">
-
-<label>Key Stressors</label>
-<textarea name="stressors"></textarea>
-
-<label>Protective Factors</label>
-<textarea name="protective_factors"></textarea>
-</fieldset>
-
-<!-- AGREEMENT -->
-<fieldset>
-<legend>CLIENT AGREEMENT</legend>
-
-<p class="small">
-I understand this assessment is not a diagnosis and is used to guide service recommendations.
-</p>
-
-<label>Client Signature</label>
-<input name="signature" required>
-</fieldset>
-
-<button type="submit">SUBMIT ASSESSMENT</button>
-
-</form>
-</div>
-
-<script>
-function renderScales(containerId, questions, prefix) {
+function createScale(containerId, items) {
   const container = document.getElementById(containerId);
-  questions.forEach((q, i) => {
+  items.forEach((item, index) => {
     const div = document.createElement("div");
-    div.innerHTML = `<label>${q}</label>
-      <div class="radio-group">
-        ${[0,1,2,3].map(v => `<label><input type="radio" name="${prefix}${i+1}" value="${v}">${v}</label>`).join("")}
-      </div>`;
+    div.innerHTML = `
+      <label>${item}</label>
+      <div class="scale">
+        <label><input type="radio" name="${containerId}${index}" value="0" checked>0</label>
+        <label><input type="radio" name="${containerId}${index}" value="1">1</label>
+        <label><input type="radio" name="${containerId}${index}" value="2">2</label>
+        <label><input type="radio" name="${containerId}${index}" value="3">3</label>
+      </div>
+    `;
     container.appendChild(div);
   });
 }
 
-renderScales("mental-state", mentalQuestions, "m");
-renderScales("functional-impact", functionalQuestions, "f");
+createScale("section2", section2Items);
+createScale("section3", section3Items);
 
-const copingDiv = document.getElementById("coping-support");
-copingQuestions.forEach((q,i)=>{
-  copingDiv.innerHTML += `<label>${q}</label>
-  <label><input type="radio" name="c${i+1}" value="0">Yes</label>
-  <label><input type="radio" name="c${i+1}" value="1">No</label>`;
-});
+function calculateScore() {
+  let totalScore = 0;
 
-const riskDiv = document.getElementById("risk-screening");
-riskQuestions.forEach((q,i)=>{
-  riskDiv.innerHTML += `<label>${q}</label>
-  <label><input type="radio" name="r${i+1}" value="0">No</label>
-  <label><input type="radio" name="r${i+1}" value="3">Yes</label>`;
-});
-</script>
+  document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
+    totalScore += parseInt(r.value);
+  });
 
-<script>
-document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+  const riskChecked = document.querySelectorAll('.risk:checked').length;
+  const supports = document.querySelectorAll('.support:checked').length;
 
-  emailjs.sendForm(
-    "service_wp7ldkb",
-    "template_1c5x1w2",
-    this
-  ).then(
-    () => {
-      alert("Assessment sent successfully.");
-      this.reset();
-    },
-    (error) => {
-      alert("Submission failed.");
-      console.error(error);
-    }
-  );
-});
+  let recommendation = "";
+
+  if (riskChecked > 0) {
+    recommendation = "Immediate psychiatric evaluation recommended due to safety concerns.";
+  } else if (totalScore <= 20) {
+    recommendation = "Mental health coaching is recommended.";
+  } else if (totalScore <= 45) {
+    recommendation = "Counselling or therapy is recommended.";
+  } else {
+    recommendation = "Psychiatric evaluation is recommended.";
+  }
+
+  document.getElementById("result").innerHTML = `
+    <strong>Total Score:</strong> ${totalScore}<br>
+    <strong>Support Factors:</strong> ${supports} / 8<br><br>
+    <strong>Recommendation:</strong><br>${recommendation}
+  `;
+}
 </script>
 
 </body>
