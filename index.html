@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function () {
+  emailjs.init("Q2ORYrQi3dYLLTYYg");
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mental Health Intake Assessment</title>
@@ -102,6 +109,26 @@ button:hover {
 </form>
 </div>
 
+<script>
+document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  emailjs.sendForm(
+    "service_wp7ldkb",
+    "template_1c5x1w2",
+    this
+  ).then(
+    function () {
+      alert("Assessment sent successfully.");
+      document.getElementById("mentalHealthForm").reset();
+    },
+    function (error) {
+      alert("Submission failed. Please try again.");
+      console.error(error);
+    }
+  );
+});
+</script>
 <script>
 document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
   e.preventDefault();
