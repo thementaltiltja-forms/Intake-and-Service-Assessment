@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function () {
-  emailjs.init("Q2ORYrQi3dYLLTYYg");
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mental Health Intake Assessment</title>
+<title>Mental Health Intake and Service Triage Assessment</title>
 
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -24,45 +17,57 @@
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f8;
-  margin: 0;
   padding: 20px;
 }
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
   background: #ffffff;
-  padding: 25px;
+  padding: 30px;
   border-radius: 8px;
 }
-h1 {
+h1, h2 {
   text-align: center;
 }
 fieldset {
   margin-bottom: 25px;
   padding: 20px;
+  border: 1px solid #ccc;
+}
+legend {
+  font-weight: bold;
 }
 label {
   display: block;
-  margin-top: 12px;
+  margin-top: 10px;
   font-weight: bold;
+}
+.radio-group label {
+  display: inline-block;
+  margin-right: 15px;
+  font-weight: normal;
 }
 input, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   margin-top: 5px;
 }
 button {
-  background: #2c3e50;
-  color: #ffffff;
-  border: none;
+  margin-top: 30px;
   padding: 15px;
   width: 100%;
+  background: #2c3e50;
+  color: #fff;
   font-size: 16px;
+  border: none;
   cursor: pointer;
-  margin-top: 20px;
 }
 button:hover {
   background: #1a252f;
+}
+.small {
+  font-size: 0.9em;
+  color: #555;
 }
 </style>
 </head>
@@ -70,65 +75,198 @@ button:hover {
 <body>
 <div class="container">
 
-<h1>Mental Health Intake Assessment</h1>
+<h1>MENTAL HEALTH INTAKE AND SERVICE TRIAGE ASSESSMENT</h1>
+<p class="small" style="text-align:center;">
+For Initial Consultation Use Only. This is not a diagnostic tool; it guides service placement.
+</p>
 
 <form id="mentalHealthForm">
 
+<!-- SECTION 1 -->
 <fieldset>
-<legend>Client Information</legend>
+<legend>SECTION 1: BASIC INFORMATION</legend>
 
 <label>Client Name</label>
-<input type="text" name="client_name" required>
+<input name="client_name" required>
 
 <label>Age</label>
-<input type="text" name="age">
+<input name="age">
 
-<label>Assessment Date</label>
+<label>Date</label>
 <input type="date" name="assessment_date">
+
+<label>Referred By</label>
+<input name="referred_by">
+
+<label>Consultation Type</label>
+<input name="consultation_type" value="Free Assessment">
 </fieldset>
 
+<!-- SECTION 2 -->
 <fieldset>
-<legend>Clinical Notes</legend>
+<legend>SECTION 2: CURRENT MENTAL STATE</legend>
+<p class="small">Scale: 0 = Not at all, 1 = Several days, 2 = More than half the days, 3 = Nearly every day</p>
+
+<script>
+const mentalQuestions = [
+"Feeling sad, empty, or hopeless",
+"Excessive worry or anxiety",
+"Difficulty concentrating or focusing",
+"Feeling overwhelmed or emotionally stuck",
+"Loss of interest or motivation",
+"Irritability or emotional outbursts",
+"Difficulty sleeping or resting",
+"Fatigue or low energy",
+"Negative self-talk or self-blame",
+"Feeling disconnected from others",
+"Somatic complaints",
+"Intrusive thoughts",
+"Sudden or extreme mood swings",
+"Feelings of guilt or worthlessness",
+"Panic sensations",
+"Social avoidance or withdrawal",
+"Difficulty with simple decisions",
+"Restlessness or physical agitation",
+"Increased substance use",
+"Feelings of impending doom"
+];
+</script>
+
+<div id="mental-state"></div>
+
+</fieldset>
+
+<!-- SECTION 3 -->
+<fieldset>
+<legend>SECTION 3: FUNCTIONAL IMPACT</legend>
+
+<script>
+const functionalQuestions = [
+"Work or school performance",
+"Relationships",
+"Self-care and daily routines",
+"Decision-making",
+"Emotional regulation",
+"Physical health",
+"Social/leisure activities",
+"Financial responsibilities",
+"Family dynamics",
+"Overall quality of life"
+];
+</script>
+
+<div id="functional-impact"></div>
+
+</fieldset>
+
+<!-- SECTION 4 -->
+<fieldset>
+<legend>SECTION 4: COPING AND SUPPORT</legend>
+
+<script>
+const copingQuestions = [
+"Healthy coping strategies",
+"Emotional support from others",
+"Control of emotions",
+"Sought help before",
+"Safe living environment",
+"Access to basic needs",
+"Ability to set boundaries",
+"Sense of purpose"
+];
+</script>
+
+<div id="coping-support"></div>
+
+</fieldset>
+
+<!-- SECTION 5 -->
+<fieldset>
+<legend>SECTION 5: RISK SCREENING</legend>
+
+<script>
+const riskQuestions = [
+"Thoughts of harming yourself",
+"Thoughts of harming others",
+"Feeling unable to keep yourself safe",
+"History of severe diagnosis",
+"History of psychiatric hospitalization",
+"Recent trauma or loss"
+];
+</script>
+
+<div id="risk-screening"></div>
+
+</fieldset>
+
+<!-- CLINICAL NOTES -->
+<fieldset>
+<legend>CLINICAL NOTES (For Coach Use Only)</legend>
 
 <label>Observed Mood</label>
-<input type="text" name="mood">
+<input name="mood">
+
+<label>Affect</label>
+<input name="affect">
+
+<label>Communication Style</label>
+<input name="communication_style">
 
 <label>Key Stressors</label>
 <textarea name="stressors"></textarea>
+
+<label>Protective Factors</label>
+<textarea name="protective_factors"></textarea>
 </fieldset>
 
+<!-- AGREEMENT -->
 <fieldset>
-<legend>Client Agreement</legend>
+<legend>CLIENT AGREEMENT</legend>
+
+<p class="small">
+I understand this assessment is not a diagnosis and is used to guide service recommendations.
+</p>
 
 <label>Client Signature</label>
-<input type="text" name="signature" required>
+<input name="signature" required>
 </fieldset>
 
-<button type="submit">Submit Assessment</button>
+<button type="submit">SUBMIT ASSESSMENT</button>
 
 </form>
 </div>
 
 <script>
-document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+function renderScales(containerId, questions, prefix) {
+  const container = document.getElementById(containerId);
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<label>${q}</label>
+      <div class="radio-group">
+        ${[0,1,2,3].map(v => `<label><input type="radio" name="${prefix}${i+1}" value="${v}">${v}</label>`).join("")}
+      </div>`;
+    container.appendChild(div);
+  });
+}
 
-  emailjs.sendForm(
-    "service_wp7ldkb",
-    "template_1c5x1w2",
-    this
-  ).then(
-    function () {
-      alert("Assessment sent successfully.");
-      document.getElementById("mentalHealthForm").reset();
-    },
-    function (error) {
-      alert("Submission failed. Please try again.");
-      console.error(error);
-    }
-  );
+renderScales("mental-state", mentalQuestions, "m");
+renderScales("functional-impact", functionalQuestions, "f");
+
+const copingDiv = document.getElementById("coping-support");
+copingQuestions.forEach((q,i)=>{
+  copingDiv.innerHTML += `<label>${q}</label>
+  <label><input type="radio" name="c${i+1}" value="0">Yes</label>
+  <label><input type="radio" name="c${i+1}" value="1">No</label>`;
+});
+
+const riskDiv = document.getElementById("risk-screening");
+riskQuestions.forEach((q,i)=>{
+  riskDiv.innerHTML += `<label>${q}</label>
+  <label><input type="radio" name="r${i+1}" value="0">No</label>
+  <label><input type="radio" name="r${i+1}" value="3">Yes</label>`;
 });
 </script>
+
 <script>
 document.getElementById("mentalHealthForm").addEventListener("submit", function(e) {
   e.preventDefault();
@@ -138,12 +276,12 @@ document.getElementById("mentalHealthForm").addEventListener("submit", function(
     "template_1c5x1w2",
     this
   ).then(
-    function () {
+    () => {
       alert("Assessment sent successfully.");
-      document.getElementById("mentalHealthForm").reset();
+      this.reset();
     },
-    function (error) {
-      alert("Submission failed. Please try again.");
+    (error) => {
+      alert("Submission failed.");
       console.error(error);
     }
   );
